@@ -20,13 +20,65 @@ exp1_boolean_min_tb.v	Verilog testbench
 exp1_boolean_min.vcd	VCD waveform dump generated during simulation
 
 ## Verilog Program
-
+module boolfun (
+input wire A, 
+input wire B, 
+input wire C, 
+input wire D, 
+output wire F 
+); 
+assign F = (~B & ~D)|(B & D) ;    // F = B'D' + BD 
+endmodule
 
 
 ## TestBench Program
 
 
+module boolfun_tb;
 
+reg A, B, C, D;
+wire F;
+
+boolfun uut (
+    .A(A),
+    .B(B),
+    .C(C),
+    .D(D),
+    .F(F)
+);
+
+initial begin
+
+    $dumpfile("boolfun.vcd");
+    $dumpvars(0, boolfun_tb);
+
+    $monitor("Time=%0t A=%b B=%b C=%b D=%b F=%b",
+              $time, A, B, C, D, F);
+
+    A=0; B=0; C=0; D=0; #10;
+    A=0; B=0; C=0; D=1; #10;
+    A=0; B=0; C=1; D=0; #10;
+    A=0; B=0; C=1; D=1; #10;
+
+    A=0; B=1; C=0; D=0; #10;
+    A=0; B=1; C=0; D=1; #10;
+    A=0; B=1; C=1; D=0; #10;
+    A=0; B=1; C=1; D=1; #10;
+
+    A=1; B=0; C=0; D=0; #10;
+    A=1; B=0; C=0; D=1; #10;
+    A=1; B=0; C=1; D=0; #10;
+    A=1; B=0; C=1; D=1; #10;
+
+    A=1; B=1; C=0; D=0; #10;
+    A=1; B=1; C=0; D=1; #10;
+    A=1; B=1; C=1; D=0; #10;
+    A=1; B=1; C=1; D=1; #10;
+
+    $finish;
+end
+
+endmodule
 
 
 
@@ -85,6 +137,7 @@ and successfully implemented using Verilog HDL.
 
 ## OUTPUT
 
+<img width="1836" height="1016" alt="Screenshot 2026-10-23 114138" src="https://github.com/user-attachments/assets/525fe14b-7312-4996-8c07-e0a11170e924" />
 
 
 The design was compiled and simulated using Synopsys VCS, and the functionality was verified using DVE waveform analysis.
